@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Parcel Sandbox</title>
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+	<div id="app"></div>
+
+	<script>
+
+	function capitalizeFirstLetter(inputStr) {
+		console.log("cap input", inputStr)
+		return inputStr[0].toUpperCase() + inputStr.slice(1);
+	}
+
+	function generateGetter(datatype, variableName) {
+		console.log("inside getter", variableName)
+		return `public ${datatype} get${capitalizeFirstLetter(variableName)}() {
+			return this.${variableName}
+		}`
+	}
+
+	function generateSetter(datatype, variableName) {
+		console.log("inside setter", variableName)
+		return `public void set${capitalizeFirstLetter(variableName)}(${datatype} input) {
+			this.${variableName} = input
+			}`
+	}
+
+	function onClickGenerate() {
+		let inputValue = document.getElementById("private-member-input").value
+		let inputLines = inputValue.split(";")
+
+		for (let i=0; i<inputLines.length; i++){
+			let inputLineSemiColonRemoved = inputLines[i].replace(";");
+			let inputLineParts = inputLineSemiColonRemoved.split(" ");
+			let accessSpecifier = inputLineParts[0];
+			let datatype = inputLineParts[1];
+			let variableName = inputLineParts[2];
+			console.log("input lines", inputLineParts)
+
+			let generatedGetter = generateGetter(datatype, variableName)
+			let generatedSetter = generateSetter(datatype, variableName)
+
+			document.getElementById("generated-getter-setter").value = document.getElementById("generated-getter-setter").value + '\n' + generatedGetter + '\n' + generatedSetter
+
+
+		}
+
+
+	}
+	</script>
+
+<h1>java getter and setter generator online</h1>
+<textarea id="private-member-input"></textarea>
+
+<textarea id="generated-getter-setter"></textarea>
+
+<button onclick='onClickGenerate()'>Generate</button>
+</body>
+
+</html>
